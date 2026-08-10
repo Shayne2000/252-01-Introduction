@@ -5,7 +5,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-		i
+int modern_parse_year(const char *record, int *out_year) {
+    const char *colon = strchr(record, ':');
+    char *end;
+
+    if (colon == NULL || colon[1] == '\0')
+        return -1;
+
+    errno = 0;
+    long year = strtol(colon + 1, &end, 10);
+
+    if (errno == ERANGE || *end != '\0')
+        return -1;
+
+    *out_year = (int)year;
+    return 0;
+}
 
 int modern_make_slug(const char *name, char *out, size_t out_size) {
     size_t i;
